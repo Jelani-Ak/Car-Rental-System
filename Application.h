@@ -14,6 +14,3 @@ public:
 private:
 	Main* m_frame = nullptr;
 };
-
-
-

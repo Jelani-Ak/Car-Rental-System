@@ -1,7 +1,9 @@
 #pragma once
 
-#include "wx/wx.h"
-#include "wx/grid.h"
+#include <wx/wx.h>
+#include <wx/grid.h>
+#include <wx/gbsizer.h>
+#include <wx/spinctrl.h>
 
 class Main : public wxFrame
 {
@@ -13,14 +15,22 @@ public:
 	void AddString(wxCommandEvent& evt);
 	void RemoveStrings(wxCommandEvent& evt);
 
-private:
-	wxButton* m_btn = nullptr;
+protected:
 
-	wxTextCtrl* m_txt1 = nullptr;
-	wxTextCtrl* m_txt2 = nullptr;
+	wxGridBagSizer* refineSearchSizer = nullptr;
+	wxGridBagSizer* imageSizer = nullptr;
+	wxComboBox* engineSizeComboBox = nullptr;
+	wxPanel* imagePanel = nullptr;
+	wxPanel* specificationsPanel = nullptr;
+	wxPanel* refineSearchPanel = nullptr;
+	wxArrayString* engineSizes = nullptr;
 
-	wxListBox* m_list1 = nullptr;
-	wxListBox* m_list2 = nullptr;
+	wxButton* button = nullptr; //Remove Later
+	wxStaticBox* titledBorder = nullptr;  //Remove Later
+	wxSpinCtrl* spinner = nullptr;  //Remove Later
+	wxStaticText* textLabel = nullptr;  //Remove Later
+	wxTextCtrl* textBox = nullptr;  //Remove Later
+	wxListBox* listBox = nullptr;  //Remove Later
 
 	wxDECLARE_EVENT_TABLE();
 };
