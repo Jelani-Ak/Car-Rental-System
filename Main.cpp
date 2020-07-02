@@ -2,14 +2,19 @@
 
 Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental Service", wxPoint(0, 0), wxSize(1265, 685))
 {
-	SetOwnBackgroundColour(wxColour(245, 245,		245));
+	SetOwnBackgroundColour(wxColour(245, 245, 245));
 
-	/* 01 Image region*/
+	/* 01 Image region */
 	imagePanel = new wxPanel(this, wxID_ANY, wxPoint(10, 10), wxSize(400, 400), wxALL);
-	imageSizer = new wxGridBagSizer(5, 5);
+	imageSizer = new wxGridBagSizer();
+
+	imageSizer->Add(new wxGenericStaticBitmap(imagePanel, wxID_ANY, wxBitmap((wxGetCwd() + "\\images\\subaru.bmp"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize),
+		wxGBPosition(0, 0), wxGBSpan(1, 1), wxALL, 70);
 
 	imagePanel->SetBackgroundColour(wxColour(255, 225, 150)); //Visual guidance, remove later
 	imagePanel->SetSizer(imageSizer);
+	imagePanel->SetAutoLayout(true);
+	imagePanel->Layout();
 	/* 01 End region */
 
 	/* 02 Specifications region */
@@ -19,8 +24,8 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental Service", wxPoint(0, 0), w
 	/* 02 End region */
 
 	/* 03 Refine search option region */
-	refineSearchPanel = new wxPanel(this, wxID_ANY, wxPoint(945, 10), wxSize(295, 400));
-	refineSearchSizer = new wxGridBagSizer(10, 5);
+	refineSearchPanel = new wxStaticBox(this, wxID_ANY, _("Filter"), wxPoint(945, 10), wxSize(295, 400));
+	refineSearchSizer = new wxGridBagSizer();
 
 	//Engine Size Array
 	engineSizes = new wxArrayString();
@@ -36,33 +41,93 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental Service", wxPoint(0, 0), w
 	engineSizes->Add("2.8L");
 	engineSizes->Add("3.0L");
 
-	//Search
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 0, _("Search car Model:"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(0, 0));
-	refineSearchSizer->Add(new wxTextCtrl(refineSearchPanel, 1, _("Enter Text"), wxDefaultPosition)), wxSize(100, 23), wxGBPosition(0, 1);
+	//Car Type Array
+	carClass = new wxArrayString();
+	carClass->Add("Micro");
+	carClass->Add("Sedan");
+	carClass->Add("CUV");
+	carClass->Add("SUV");
+	carClass->Add("Hatchback");
+	carClass->Add("Roadster");
+	carClass->Add("Pickup");
+	carClass->Add("Van");
+	carClass->Add("Coupe");
+	carClass->Add("Cabriole");
+	carClass->Add("Minivan");
+
+	//Fuel Type Array
+	fuelType = new wxArrayString();
+	fuelType->Add("Petrol");
+	fuelType->Add("Diesel");
+	fuelType->Add("Hybrid");
+	fuelType->Add("Electric");
+
+	int gridPosition = 0;
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, wxID_ANY, _(""), wxDefaultPosition, wxSize(0, 0)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 2), wxTOP, 2); //Dummy widget
+
+	//Text Search
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 0, _("Search Name:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxTextCtrl(refineSearchPanel, 1, _("Enter Text"), wxDefaultPosition, wxSize(140, 23)), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
 
 	//Number of Doors
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 2, _("Number of Doors:"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(1, 0));
-	refineSearchSizer->Add(new wxSpinCtrl(refineSearchPanel, 3, _("2"), wxDefaultPosition, wxSize(75, 23)), wxGBPosition(1, 1));
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 2, _("Number of Doors:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxSpinCtrl(refineSearchPanel, 3, _("2"), wxDefaultPosition, wxSize(140, 23)), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
 
 	//Engine Size
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 4, _("Engine Size:"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(2, 0));
-	refineSearchSizer->Add(new wxComboBox(refineSearchPanel, 5, _("Select Size"), wxDefaultPosition, wxSize(100, 23), *engineSizes), wxGBPosition(2, 1));
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 4, _("Engine Size:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxComboBox(refineSearchPanel, 5, _("Select Engine Size"), wxDefaultPosition, wxSize(140, 23), *engineSizes), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
 
-	//Number of seats
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 6, _("Number of Seats:"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(3, 0));
-	refineSearchSizer->Add(new wxSpinCtrl(refineSearchPanel, 7, _("2"), wxDefaultPosition, wxSize(75, 23)), wxGBPosition(3, 1));
+	//Gearbox (To be implemented)
+
+	//Fuel Type
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 6, _("Fuel Type:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxComboBox(refineSearchPanel, 7, _("Select Fuel Type"), wxDefaultPosition, wxSize(140, 23), *fuelType), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
+
+	//Car Type
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 8, _("Car Class:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxComboBox(refineSearchPanel, 9, _("Select Class Type"), wxDefaultPosition, wxSize(140, 23), *carClass), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
+
+	//Number of Seats
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 10, _("Seat Capacity:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxSpinCtrl(refineSearchPanel, 11, _("2"), wxDefaultPosition, wxSize(140, 23)),
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
+
+	//Number of Previous Owners
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 12, _("Previous Owners:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
+	refineSearchSizer->Add(new wxSpinCtrl(refineSearchPanel, 13, _("2"), wxDefaultPosition, wxSize(140, 23)), 
+		wxGBPosition(gridPosition, 1), wxGBSpan(1, 1), wxBOTTOM | wxLEFT | wxRIGHT, 10);
 
 	//Minimum and Maximum mileage slider
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 8, _("Mileage:"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(4, 0));
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 8, _("Minimum"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(5, 0));
-	refineSearchSizer->Add(new wxSlider(refineSearchPanel, 9, 10000, 0, 150000, wxDefaultPosition, wxSize(295, 23), wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE), wxGBPosition(6, 0), wxGBSpan(1, 2), wxBOTTOM, 5);
-	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 8, _("Maximum"), wxDefaultPosition, wxSize(100, 23)), wxGBPosition(7, 0));
-	refineSearchSizer->Add(new wxSlider(refineSearchPanel, 10, 10000, 0, 150000, wxDefaultPosition, wxSize(295, 23), wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE), wxGBPosition(8, 0), wxGBSpan(1, 2));
-		
-	//Submit Button
-	refineSearchSizer->Add(new wxButton(refineSearchPanel, wxID_ANY, _("Search"), wxDefaultPosition, wxDefaultSize), wxGBPosition(10, 0));
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 14, _("Mileage:"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 10);
 
-	refineSearchPanel->SetBackgroundColour(wxColour(255, 225, 150)); //Visual guidance, remove later
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 15, _("Minimum"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 16);
+
+	refineSearchSizer->Add(new wxSlider(refineSearchPanel, 16, 0, 0, 150000, wxDefaultPosition, wxSize(275, 23), 
+		wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 2), wxBOTTOM | wxLEFT | wxRIGHT, 10);
+
+	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 17, _("Maximum"), wxDefaultPosition, wxSize(100, 23)), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 16);
+
+	refineSearchSizer->Add(new wxSlider(refineSearchPanel, 18, 150000, 0, 150000, wxDefaultPosition, wxSize(275, 23), 
+		wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE), 
+		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 2), wxLEFT | wxRIGHT, 15);
+
 	refineSearchPanel->SetSizer(refineSearchSizer);
 	refineSearchPanel->SetAutoLayout(true);
 	refineSearchPanel->Layout();
@@ -137,30 +202,4 @@ CarRentalTable::CarRentalTable(Main* parent) : wxGrid(parent, wxID_ANY)
 			SetCellBackgroundColour(i, j, wxColour(240, 240, 240));
 		}
 	}
-}
-
-//Event Handlers
-wxBEGIN_EVENT_TABLE(Main, wxFrame)
-	EVT_BUTTON(10001, AddString) //Test, remove later
-	EVT_BUTTON(10002, RemoveStrings) //Test, remove later
-	EVT_BUTTON(1, AddString) //Test, remove later
-wxEND_EVENT_TABLE()
-
-//Add string to the list (Test function, remove later)
-void Main::AddString(wxCommandEvent &evt)
-{
-	if (!textBox->IsEmpty()) {
-		listBox->AppendString(textBox->GetValue());
-		textBox->Clear();
-	}
-	evt.Skip();
-}
-
-//Clear all strings (Test function, remove later)
-void Main::RemoveStrings(wxCommandEvent &evt)
-{
-	if (!listBox->IsEmpty()) {
-		listBox->Clear();
-	}
-	evt.Skip();
 }

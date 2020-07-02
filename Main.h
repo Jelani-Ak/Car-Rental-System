@@ -4,6 +4,7 @@
 #include <wx/grid.h>
 #include <wx/gbsizer.h>
 #include <wx/spinctrl.h>
+#include <wx/generic/statbmpg.h>
 
 class Main : public wxFrame
 {
@@ -16,23 +17,19 @@ public:
 	void RemoveStrings(wxCommandEvent& evt);
 
 protected:
-
 	wxGridBagSizer* refineSearchSizer = nullptr;
 	wxGridBagSizer* imageSizer = nullptr;
 	wxComboBox* engineSizeComboBox = nullptr;
 	wxPanel* imagePanel = nullptr;
 	wxPanel* specificationsPanel = nullptr;
-	wxPanel* refineSearchPanel = nullptr;
+	wxPanel* testPanel = nullptr;
+	wxStaticBox* refineSearchPanel = nullptr;
 	wxArrayString* engineSizes = nullptr;
+	wxArrayString* carClass = nullptr;
+	wxArrayString* fuelType = nullptr;
+	wxBitmap* manufacturerLogo = nullptr;
 
-	wxButton* button = nullptr; //Remove Later
-	wxStaticBox* titledBorder = nullptr;  //Remove Later
-	wxSpinCtrl* spinner = nullptr;  //Remove Later
-	wxStaticText* textLabel = nullptr;  //Remove Later
-	wxTextCtrl* textBox = nullptr;  //Remove Later
-	wxListBox* listBox = nullptr;  //Remove Later
-
-	wxDECLARE_EVENT_TABLE();
+	//wxDECLARE_EVENT_TABLE();
 };
 
 class CarRentalTable : public wxGrid
