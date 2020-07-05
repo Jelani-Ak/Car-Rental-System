@@ -1,12 +1,12 @@
 #include "Main.h"
 
-Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental Service", wxPoint(0, 0), wxSize(1265, 685))
+Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental System", wxDefaultPosition, wxSize(1265, 685))
 {
 	SetOwnBackgroundColour(wxColour(245, 245, 245));
 
 	/* 01 Image region */
 	imagePanel = new wxPanel(this, wxID_ANY, wxPoint(10, 10), wxSize(400, 400), wxALL);
-	imageSizer = new wxGridBagSizer();
+	imageSizer = new wxGridBagSizer();	
 
 	imageSizer->Add(new wxGenericStaticBitmap(imagePanel, wxID_ANY, wxBitmap((wxGetCwd() + "\\images\\subaru.bmp"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize),
 		wxGBPosition(0, 0), wxGBSpan(1, 1), wxALL, 70);
@@ -118,7 +118,7 @@ Main::Main() : wxFrame(nullptr, wxID_ANY, "Car Rental Service", wxPoint(0, 0), w
 		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 1), wxLEFT | wxRIGHT, 16);
 
 	refineSearchSizer->Add(new wxSlider(refineSearchPanel, 16, 0, 0, 150000, wxDefaultPosition, wxSize(275, 23), 
-		wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE), 
+		wxSL_HORIZONTAL | wxSL_VALUE_LABEL | wxSL_SELRANGE),
 		wxGBPosition(++gridPosition, 0), wxGBSpan(1, 2), wxBOTTOM | wxLEFT | wxRIGHT, 10);
 
 	refineSearchSizer->Add(new wxStaticText(refineSearchPanel, 17, _("Maximum"), wxDefaultPosition, wxSize(100, 23)), 
