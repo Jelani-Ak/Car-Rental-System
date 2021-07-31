@@ -14,8 +14,8 @@ Application::~Application()
 
 bool Application::OnInit()
 {
-	m_frame = new Main();
-	m_frame->Show();
+	userInterface = new UserInterface();
+	userInterface->Show();
 
 	return true;
 }

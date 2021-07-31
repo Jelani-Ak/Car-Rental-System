@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Main.h"
+#include "UserInterface.h"
 
 class Application : public wxApp
 {
@@ -12,5 +12,5 @@ public:
 	virtual bool OnInit();
 
 private:
-	Main* m_frame = nullptr;
+	UserInterface* userInterface = nullptr;
 };
